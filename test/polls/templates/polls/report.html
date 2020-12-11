@@ -1,0 +1,22 @@
+<h1>{{question.question_text}}</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th style="text-align: left;">Ponudeni odgovor</th>
+            <th style="text-align: left;">Broj glasova</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for choice in question.choice_set.all %}
+        <tr>
+            <td>
+                {{choice.choice_text}}
+            </td>
+            <td>
+                {{choice.votes}}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
