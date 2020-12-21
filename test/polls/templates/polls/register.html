@@ -1,0 +1,25 @@
+{% extends "polls/base.html" %}
+
+{% block content %}
+
+<div class="container card" style="margin-top: 50;">
+    <div class="card-body">
+    <form method="POST" action="">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">{{field.label}}</label>
+            <div class="col-sm-5">
+                {{field}}
+            </div>
+        </div>
+        {% endfor %}
+        {% for message in messages %} 
+            <p>{{message}}</p>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    </div>
+</div>
+
+{% endblock content %}
