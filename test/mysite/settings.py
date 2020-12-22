@@ -71,6 +71,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
+LOGIN_URL = 'polls:login'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

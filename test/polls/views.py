@@ -9,7 +9,7 @@ from .forms import CreateUserForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def home(request):
     context = {}
@@ -38,8 +38,8 @@ def loginView(request):
         return redirect('polls:index')
 
     if request.method == 'POST':
-        username = request.post.get('username')
-        password = request.post.get('password')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
         user = authenticate(request, username=username, password=password)
 
@@ -56,8 +56,8 @@ def logoutUser(request):
     logout(request)
     return redirect('polls:home')
 
-@method_decorator(login_required, name='dispatch')
-class ReportView(generic.DetailView):
+class ReportView(LoginRequiredMixin, generic.DetailView):
+    redirect_field_name = 'index'
     model = Question
     template_name = 'polls/report.html'
 
@@ -76,8 +76,8 @@ def pdfView(request, question_id):
         return response
     return HttpResponse("Not found")
     
-@method_decorator(login_required, name='dispatch')
-class IndexView(generic.ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
+    redirect_field_name = 'index'
     template_name = 'polls/index.html'
     context_object_name = 'latest_question_list'
 
@@ -85,13 +85,14 @@ class IndexView(generic.ListView):
         """Return the last five published questions."""
         return Question.objects.order_by('-pub_date')[:5]
 
-@method_decorator(login_required, name='dispatch')
-class DetailView(generic.DetailView):
+class DetailView(LoginRequiredMixin, generic.DetailView):
+    redirect_field_name = 'index'
     model = Question
     template_name = 'polls/detail.html'
 
 
-class ResultsView(generic.DetailView):
+class ResultsView(LoginRequiredMixin, generic.DetailView):
+    redirect_field_name = 'index'
     model = Question
     template_name = 'polls/results.html'
 
